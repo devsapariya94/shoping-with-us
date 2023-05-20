@@ -76,8 +76,8 @@ app.get('*', (req, res) => {
     });
 
 
-    query = `INSERT INTO shops (name, subdomain) VALUES (?, ?)`;
-    db.run(query, [name, subdomain], (err) => {
+    const insert_query = `INSERT INTO shops (name, subdomain) VALUES (?, ?)`;
+    db.run(insert_query, [name, subdomain], (err) => {
         if (err) {
             console.error(err);
             res.status(500).send('Error occurred while creating the shop.');
