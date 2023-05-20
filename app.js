@@ -28,14 +28,22 @@ app.set('views', path.join(__dirname, 'views'));
 app.get('*', (req, res) => {
     const host = req.headers.host;
     const subdomain = host.split('.')[0];
-  
-    // Load shop details for the given subdomain from SQLite
+
+    if (subdomain === 'www') {
+        res.render('form');
+    }
+    else {
     const query = `SELECT name FROM shops WHERE subdomain = ?`;
     db.get(query, [subdomain], (err, row) => {
       if (err) {
         console.error(err);
         res.status(500).send('Error occurred while fetching shop details.');
-      } else {
+      } 
+      else if (!row) {
+        res.status(404).send('Shop not found.');
+        }
+
+      else {
         const name = row ? row.name : '';
   
         // Check if no path is specified
@@ -46,31 +54,36 @@ app.get('*', (req, res) => {
         }
       }
     });
+
+    }
   });
   
 
+  app.post('/create', (req, res) => {
+    const { name, subdomain } = req.body;
+
+    //check for unique subdomain
+
+    const query = `SELECT id FROM shops WHERE subdomain = ?`;
+    db.get(query, [subdomain], (err, row) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('Error occurred while fetching shop details.');
+        } else if (row) {
+            res.status(400).send('Shop already exists.');
+        }
+    });
 
 
-
-
-app.get('/get', (req, res) => {
-  res.sendFile(__dirname + '/form.html');
-});
-
-app.post('/', (req, res) => {
-  const name = req.body.name;
-  const subdomain = req.body.subdomain;
-
-  // Save the shop details to SQLite
-  const query = `INSERT INTO shops (name, subdomain) VALUES (?, ?)`;
-  db.run(query, [name, subdomain], (err) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send('Error occurred while saving shop details.');
-    } else {
-      res.render('succese', { name, subdomain });
-    }
-  });
+    query = `INSERT INTO shops (name, subdomain) VALUES (?, ?)`;
+    db.run(query, [name, subdomain], (err) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('Error occurred while creating the shop.');
+        } else {
+            res.render('succese', { name , subdomain});
+        }
+    });
 });
 
 
