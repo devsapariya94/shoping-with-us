@@ -32,7 +32,7 @@ app.post('/', (req, res) => {
       console.error(err);
       res.status(500).send('Error occurred while saving shop details.');
     } else {
-      res.send(`Success! Name: ${name}, Subdomain: ${subdomain}`);
+      res.render('succese', { name }, { subdomain });
     }
   });
 });
