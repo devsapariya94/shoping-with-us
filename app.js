@@ -39,21 +39,16 @@ app.post('/', (req, res) => {
 });
 
 app.get('*', (req, res) => {
-  const subdomain = req.headers.host.split('.')[0];
+  const host = req.headers.host;
+  const subdomain = host.split('.')[0];
 
   // Load shop details for the given subdomain from SQLite
-  console.log(subdomain);
   const query = `SELECT name FROM shops WHERE subdomain = ?`;
   db.get(query, [subdomain], (err, row) => {
     if (err) {
       console.error(err);
       res.status(500).send('Error occurred while fetching shop details.');
-    } 
-    else if (!row) {
-        res.status(404).send('Shop not found.');
-    }
-    
-    else {
+    } else {
       const name = row ? row.name : '';
       res.render('subdomain', { name });
     }
