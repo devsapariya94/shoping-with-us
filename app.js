@@ -1,5 +1,10 @@
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
+const path = require('path');
+
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
 
 const app = express();
 const db = new sqlite3.Database('database.db');
@@ -32,7 +37,8 @@ app.post('/', (req, res) => {
       console.error(err);
       res.status(500).send('Error occurred while saving shop details.');
     } else {
-      res.render('succese', { name }, { subdomain });
+        res.render('succese', { name, subdomain });
+
     }
   });
 });
@@ -48,7 +54,7 @@ app.get('*', (req, res) => {
       res.status(500).send('Error occurred while fetching shop details.');
     } else {
       const name = row ? row.name : '';
-      res.render('index', { name });
+      res.render('subdomain', { name });
     }
   });
 });
