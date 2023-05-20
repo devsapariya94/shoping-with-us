@@ -5,6 +5,8 @@ const path = require('path');
 const app = express();
 const db = new sqlite3.Database('database.db');
 
+
+
 // Create the 'shops' table if it doesn't exist
 db.serialize(() => {
   db.run(`
@@ -21,43 +23,40 @@ app.use(express.urlencoded({ extended: false }));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+app.get('*', (req, res, next) => {
+  const host = req.headers.host;
+  const subdomain = host.split('.')[0];
 
-
-
-
-app.get('*', (req, res) => {
-    const host = req.headers.host;
-    const subdomain = host.split('.')[0];
-
-    if (subdomain === 'www') {
-        //render form.html
-        res.sendFile(__dirname + '/form.html');
-    }
-    else {
+  if (subdomain === 'www') {
+    next(); // Proceed to the next middleware (form.html)
+  } else {
     const query = `SELECT name FROM shops WHERE subdomain = ?`;
     db.get(query, [subdomain], (err, row) => {
       if (err) {
         console.error(err);
         res.status(500).send('Error occurred while fetching shop details.');
-      } 
-      else if (!row) {
+      } else if (!row) {
         res.status(404).send('Shop not found.');
-        }
-
-      else {
+      } else {
         const name = row ? row.name : '';
-  
+
         // Check if no path is specified
         if (req.originalUrl === '/') {
           res.render('subdomain', { name });
         } else {
-          res.status(404).send('Not Found');
+          next(); // Proceed to the next middleware (404)
         }
       }
     });
+  }
+});
 
-    }
-  });
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/form.html');
+});
+
+
+
   
 
   app.post('/create', (req, res) => {
@@ -104,6 +103,10 @@ app.get('/contact', (req, res) => {
     });
   });
 
+  app.use((req, res) => {
+    res.status(404).send('Not Found');
+  });
+  
 
 app.listen(3000, () => {
   console.log('Server started on port 3000');
