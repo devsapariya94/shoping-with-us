@@ -30,7 +30,8 @@ app.get('*', (req, res) => {
     const subdomain = host.split('.')[0];
 
     if (subdomain === 'www') {
-        res.render('form');
+        //render form.html
+        res.sendFile(__dirname + '/form.html');
     }
     else {
     const query = `SELECT name FROM shops WHERE subdomain = ?`;
