@@ -21,25 +21,9 @@ app.use(express.urlencoded({ extended: false }));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/form.html');
-});
 
-app.post('/', (req, res) => {
-  const name = req.body.name;
-  const subdomain = req.body.subdomain;
 
-  // Save the shop details to SQLite
-  const query = `INSERT INTO shops (name, subdomain) VALUES (?, ?)`;
-  db.run(query, [name, subdomain], (err) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send('Error occurred while saving shop details.');
-    } else {
-      res.render('succese', { name, subdomain });
-    }
-  });
-});
+
 
 app.get('*', (req, res) => {
     const host = req.headers.host;
@@ -64,6 +48,32 @@ app.get('*', (req, res) => {
     });
   });
   
+
+
+
+
+
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/form.html');
+});
+
+app.post('/', (req, res) => {
+  const name = req.body.name;
+  const subdomain = req.body.subdomain;
+
+  // Save the shop details to SQLite
+  const query = `INSERT INTO shops (name, subdomain) VALUES (?, ?)`;
+  db.run(query, [name, subdomain], (err) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Error occurred while saving shop details.');
+    } else {
+      res.render('succese', { name, subdomain });
+    }
+  });
+});
+
+
 
 app.listen(3000, () => {
   console.log('Server started on port 3000');
