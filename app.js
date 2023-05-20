@@ -42,21 +42,28 @@ app.post('/', (req, res) => {
 });
 
 app.get('*', (req, res) => {
-  const host = req.headers.host;
-  const subdomain = host.split('.')[0];
-
-  // Load shop details for the given subdomain from SQLite
-  const query = `SELECT name FROM shops WHERE subdomain = ?`;
-  db.get(query, [subdomain], (err, row) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send('Error occurred while fetching shop details.');
-    } else {
-      const name = row ? row.name : '';
-      res.render('subdomain', { name });
-    }
+    const host = req.headers.host;
+    const subdomain = host.split('.')[0];
+  
+    // Load shop details for the given subdomain from SQLite
+    const query = `SELECT name FROM shops WHERE subdomain = ?`;
+    db.get(query, [subdomain], (err, row) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send('Error occurred while fetching shop details.');
+      } else {
+        const name = row ? row.name : '';
+  
+        // Check if no path is specified
+        if (req.originalUrl === '/') {
+          res.render('subdomain', { name });
+        } else {
+          res.status(404).send('Not Found');
+        }
+      }
+    });
   });
-});
+  
 
 app.listen(3000, () => {
   console.log('Server started on port 3000');
