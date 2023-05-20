@@ -87,6 +87,22 @@ app.get('*', (req, res) => {
 });
 
 
+app.get('/contact', (req, res) => {
+    const subdomain = req.headers.host.split('.')[0];
+  
+    // Load shop details for the given subdomain from SQLite
+    const query = `SELECT name FROM shops WHERE subdomain = ?`;
+    db.get(query, [subdomain], (err, row) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send('Error occurred while fetching shop details.');
+      } else {
+        const name = row ? row.name : '';
+        res.render('contact', { name });
+      }
+    });
+  });
+
 
 app.listen(3000, () => {
   console.log('Server started on port 3000');
