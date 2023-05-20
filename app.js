@@ -18,6 +18,9 @@ db.serialize(() => {
 
 app.use(express.urlencoded({ extended: false }));
 
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/form.html');
 });
@@ -54,9 +57,6 @@ app.get('*', (req, res) => {
     }
   });
 });
-
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
 
 app.listen(3000, () => {
   console.log('Server started on port 3000');
