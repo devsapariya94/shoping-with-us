@@ -28,6 +28,11 @@
                 </div>
                 <input type="text" class="form-control mt-3" placeholder="Address" name="address" required>
             </div>
+
+            <div class="mb-3">
+                <label for="productCount" class="form-label">Numbure of Product:</label>
+                <input type="integer" class="form-control" id="productCount" name="productCount" required>
+            </div>
             <hr>
             <br>
             <h3 class="mt-4">Product Details</h3>
@@ -47,9 +52,13 @@
                 <br>
                 <hr>
             </div>
-            
+
+   
+
             <button type="button" class="btn btn-primary" onclick="addProductField()">Add Product</button>
             <input type="submit" class="btn btn-success mt-3" value="Submit">
+
+          
         </form>
     </div>
 
@@ -60,17 +69,19 @@
             productField.classList.add('mb-3', 'product-field');
             productField.innerHTML = `
                 <label class="form-label">Product Image link:</label>
-                <input type="text" class="form-control" name="productImage[]" required>
+                <input type="text" class="form-control" name="productImage" required>
             `;
             productField.innerHTML += `
                 <label class="form-label">Product Name:</label>
-                <input type="text" class="form-control" name="productName[]" required>
+                <input type="text" class="form-control" name="productName" required>
             `;
             productField.innerHTML += `
                 <label class="form-label">Product Price:</label>
-                <input type="text" class="form-control" name="productPrice[]" required>
+                <input type="text" class="form-control" name="productPrice" required>
             `;
             productFields.appendChild(productField);
+
+        
         }
     </script>
 </body>
