@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shop Details</title>
+    <style>
+        /* CSS styling goes here */
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .details {
+            margin-bottom: 30px;
+        }
+
+        .details p {
+            margin: 10px 0;
+        }
+
+        .contact-info {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Shop Details</h1>
+        <div class="details">
+            <h3>Shop Information</h3>
+            <p>Name: <%= name %></p>
+            <p>Subdomain: <%= subdomain %>.chainchat.biz</p>
+        </div>
+        <div class="contact-info">
+            <h3>Contact Information</h3>
+            <p>Mobile: <%= mobile %></p>
+            <p>Email: <%= email %></p>
+            <p>Address: <%= address %></p>
+        </div>
+        <div class="button-container">
+            <a href="http://<%= subdomain %>.chainchat.biz" class="button">Visit Shop Website</a>
+        </div>
+    </div>
+</body>
+</html>

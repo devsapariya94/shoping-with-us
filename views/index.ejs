@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title><%= name %> - Online Store</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      padding: 20px;
+    }
+    .product {
+      margin-bottom: 20px;
+    }
+    .product .card {
+      height: 100%;
+    }
+    .product .card-img-top {
+      height: 200px;
+      object-fit: cover;
+    }
+    .product .card-title {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+    .product .card-text {
+      font-size: 16px;
+      color: #777;
+      margin-bottom: 20px;
+    }
+    .product .price {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .product .btn {
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <h1 class="text-center mb-4"><%= name %> - Online Store</h1>
+  <div class="row">
+    <% products.forEach(function(product) { %>
+      <div class="col-md-4">
+        <div class="card product">
+          <img src="<%= product.image %>" class="card-img-top" alt="<%= product.name %>">
+          <div class="card-body">
+            <h5 class="card-title"><%= product.name %></h5>
+            <p class="card-text"><span class="price">$<%= product.price.toFixed(2) %></span></p>
+            <a href="#" class="btn btn-primary">Add to Cart</a>
+          </div>
+        </div>
+      </div>
+    <% }); %>
+  </div>
+</body>
+</html>
